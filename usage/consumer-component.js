@@ -27,7 +27,8 @@ class ConsumerComponent extends HTMLElement {
         this.shadowRoot.querySelector('#increment-btn').addEventListener('click', () => {
            let currentState = this._stateManager.get_state();
            currentState.counter += 1;
-           this._stateManager.update_state(currentState);
+           console.log('json stringify ====', JSON.stringify(currentState))
+           this._stateManager.update_state(JSON.stringify(currentState));
            this.updateState();
         });
     }

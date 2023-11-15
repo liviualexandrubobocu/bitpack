@@ -6,6 +6,7 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 
 use serde_wasm_bindgen::{from_value, to_value};
+use web_sys::console;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -49,11 +50,12 @@ impl StateManager{
         Ok(())
     }
 
-    pub fn update_state(&mut self, state_diff: HashMap<String, JsValue>){
+    pub fn update_state(&mut self, state_difference: &str){
+        let state_diff: HashMap<String, String> = serde_json::from_str(state_difference).unwrap();
         let mut state_ref = self.state.borrow_mut();
         for (key, value) in state_diff {
             match key.as_str() {
-                "counter" => state_ref.counter = value.as_f64().unwrap() as i64,
+                "counter" => state_ref.counter = value.parse::<i64>().unwrap(),
                 _ => {}
             }
         }
